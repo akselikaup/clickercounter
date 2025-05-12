@@ -1,12 +1,34 @@
 import './App.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const App : React.FC = () : React.ReactElement => {
 
 
-const [okMaksaa, setOkMaksaa] = useState<number>(0);
-const [vaatiiSelvitysta, setVaatiiSelvitysta] = useState<number>(0);
-const [nollausPvm, setNollausPvm] = useState<string>("");
+const [okMaksaa, setOkMaksaa] = useState<number>(() => {
+  const stored = localStorage.getItem("okMaksaa");
+  return stored ? parseInt(stored) : 0;
+});
+const [vaatiiSelvitysta, setVaatiiSelvitysta] = useState<number>(() => {
+  const stored = localStorage.getItem("vaatiiSelvitysta");
+  return stored ? parseInt(stored) : 0;
+});
+const [nollausPvm, setNollausPvm] = useState<string>(() => {
+  return localStorage.getItem("nollausPvm") || "";
+});
+
+useEffect(() => {
+  localStorage.setItem("okMaksaa", okMaksaa.toString());
+}, [okMaksaa]);
+
+useEffect(() => {
+  localStorage.setItem("vaatiiSelvitysta", vaatiiSelvitysta.toString());
+}, [vaatiiSelvitysta]);
+
+useEffect(() => {
+  localStorage.setItem("nollausPvm", nollausPvm);
+}, [nollausPvm]);
+
+
 const summa : number = okMaksaa + vaatiiSelvitysta;
 
 function lisaaOkMaksaa(): void{
